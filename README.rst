@@ -1,6 +1,9 @@
 Just One of those things
 ------------------------
 
+Seo ville slugger will solve the problems you are having with django, media
+files and filenames.
+
 Django's default storage backend has some pretty annoying behaviour.
 When uploading the same file for the second time, you get a second file on disk
 with some kind of crazy hash value added at the end.
