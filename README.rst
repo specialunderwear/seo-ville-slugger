@@ -31,3 +31,4 @@ Suppose you want sorl thumbnail to also have nice urls based on the original
 filename?::
 
     THUMBNAIL_BACKEND = 'seo.ville.sorl.SEOThumbnailBackend'
+    THUMBNAIL_STORAGE  = 'seo.ville.sorl.SEOThumbnailStorage'

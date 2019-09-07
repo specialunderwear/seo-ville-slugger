@@ -9,6 +9,8 @@ logger = logging.getLogger(__name__)
 
 
 class SEOStorage(SpecificNameStorage):
+    prefix = ""
+
     def create_link(self, storage_path, link_path):
         full_storage_path = self.path(storage_path)
         full_link_path = self.path(link_path)
@@ -20,7 +22,7 @@ class SEOStorage(SpecificNameStorage):
             else:
                 return storage_path
 
-        os.symlink(full_storage_path, full_link_path)
+        os.symlink(path.basename(storage_path), full_link_path)
         return link_path
 
     def save(self, name, content, max_length=None):
@@ -28,7 +30,7 @@ class SEOStorage(SpecificNameStorage):
             name = content.name
 
         file_id = file_hash(content)
-        storage_path, link_path = storage_location(file_id, name)
+        storage_path, link_path = storage_location(file_id, name, self.prefix)
         stored_location = self._save(storage_path, content)
         logger.debug("File stored in %s" % stored_location)
         return self.create_link(stored_location, link_path)

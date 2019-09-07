@@ -1,5 +1,7 @@
 from os import path
 from sorl.thumbnail.base import ThumbnailBackend
+from sorl.thumbnail.conf import settings
+from .slugger import SEOStorage
 
 
 class SEOThumbnailBackend(ThumbnailBackend):
@@ -7,3 +9,7 @@ class SEOThumbnailBackend(ThumbnailBackend):
         name = path.basename(source.name)
         base, ext = path.splitext(name)
         return "%s.%s%s" % (base, geometry_string, ext)
+
+
+class SEOThumbnailStorage(SEOStorage):
+    prefix = settings.THUMBNAIL_PREFIX
