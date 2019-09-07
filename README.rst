@@ -16,6 +16,23 @@ There are 2 kinds of people that are not happy with that.
 This storage backend stores files named after their hash value and adds a symlink
 with the original name. No duplication and you can SEO your heart out.
 
+Media file and pagespeed mobile score
+=====================================
+
+Ideally, you would want to have long cache expiry headers for your site’s uploaded files,
+Just like you’ve got with your static files.
+That usually poses a problem in conjunction with the pretty urls.
+It is safe to put long expiry headers when using SEOStorage, because the files
+are distributed over folders named after a tiny piece of the hash.
+Obviously this small hash could lead to collisions, so the storage backend will prevent
+it as follows:
+
+In the rare case we encounter two different files with exactly the same filename, and they end up in the same folder
+due to hash collision, the new file will not get the pretty SEO url. Instead the full hashed filename
+will be used instead. In these rare cases you might get a SEO unfriendly url.
+
+We can’t worry about that can we? Phat phat chance anyone will notice!
+
 Usage
 =====
 
