@@ -14,7 +14,7 @@ There are 2 kinds of people that are not happy with that.
 2. The SEO people your customer has hired.
 
 This storage backend stores files named after their hash value and adds a symlink
-with the original name. No duplication and you SEO your heart out.
+with the original name. No duplication and you can SEO your heart out.
 
 Usage
 =====
