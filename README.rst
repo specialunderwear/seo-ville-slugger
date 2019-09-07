@@ -23,3 +23,11 @@ You can use the storage backend on a global level by adding the following to
 your django settings::
 
     DEFAULT_FILE_STORAGE = 'seo.ville.slugger.SEOStorage'
+
+Sorl thumbnail
+==============
+
+Suppose you want sorl thumbnail to also have nice urls based on the original
+filename?::
+
+    THUMBNAIL_BACKEND = 'seo.ville.sorl.SEOThumbnailBackend'
