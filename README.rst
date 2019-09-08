@@ -49,3 +49,9 @@ filename?::
 
     THUMBNAIL_BACKEND = 'seo.ville.sorl.SEOThumbnailBackend'
     THUMBNAIL_STORAGE  = 'seo.ville.sorl.SEOThumbnailStorage'
+
+Settings
+========
+
+``HASH_BLOCKSIZE`` change this if you think hashing of the file use too much or not enough memory
+``HASH_DIRNAME_SLICE_SIZE`` change this if you find there are too many collisions.

@@ -20,16 +20,8 @@ def file_name(file_id, name):
     return "%s%s" % (file_id, ext.lower())
 
 
-def sizeof_fmt(num, suffix="B"):
-    for unit in ["", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi"]:
-        if abs(num) < 1024.0:
-            return "%3.1f%s%s" % (num, unit, suffix)
-        num /= 1024.0
-    return "%.1f%s%s" % (num, "Yi", suffix)
-
-
 def get_directory_from_file_id(file_id):
-    return file_id[:2]
+    return file_id[: seo_settings.HASH_DIRNAME_SLICE_SIZE]
 
 
 def storage_location(file_id, name, prefix=""):
