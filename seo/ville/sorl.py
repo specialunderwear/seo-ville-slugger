@@ -1,5 +1,5 @@
 from os import path
-from sorl.thumbnail.base import ThumbnailBackend
+from sorl.thumbnail.base import ThumbnailBackend, EXTENSIONS
 from sorl.thumbnail.conf import settings
 from sorl.thumbnail import default
 from .slugger import SEOStorage
@@ -10,7 +10,9 @@ class SEOThumbnailBackend(ThumbnailBackend):
         name = path.basename(source.name)
         dirname = path.dirname(source.name)
         base, ext = path.splitext(name)
-        return path.join(dirname, "%s.%s%s" % (base, geometry_string, ext))
+        return path.join(
+            dirname, "%s.%s.%s" % (base, geometry_string, EXTENSIONS[options["format"]])
+        )
 
     def _create_thumbnail(self, source_image, geometry_string, options, thumbnail):
         key_at_start = thumbnail.key
