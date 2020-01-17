@@ -50,6 +50,10 @@ filename?::
     THUMBNAIL_BACKEND = 'seo.ville.sorl.SEOThumbnailBackend'
     THUMBNAIL_STORAGE  = 'seo.ville.sorl.SEOThumbnailStorage'
 
+With sorl you can pass the slug as a parameter to the thumbnail tag::
+
+    {% thumbnail image "330x450" upscale=True slug=slug as thumb %}
+
 Settings
 ========
 

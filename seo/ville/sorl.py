@@ -10,6 +10,9 @@ class SEOThumbnailBackend(ThumbnailBackend):
         name = path.basename(source.name)
         dirname = path.dirname(source.name)
         base, ext = path.splitext(name)
+        if "slug" in options:
+            base = options["slug"]
+
         return path.join(
             dirname, "%s.%s.%s" % (base, geometry_string, EXTENSIONS[options["format"]])
         )
