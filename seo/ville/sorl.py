@@ -1,8 +1,31 @@
-from os import path
+import contextlib
+
+from os import path, remove
 from sorl.thumbnail.base import ThumbnailBackend, EXTENSIONS
 from sorl.thumbnail.conf import settings
 from sorl.thumbnail import default
+from tempfile import NamedTemporaryFile
 from .slugger import SEOStorage
+
+from PIL import Image, ImageColor
+
+
+@contextlib.contextmanager
+def create_copy_with_matte(source_image, matte=settings.THUMBNAIL_PADDING_COLOR):
+    with NamedTemporaryFile(
+        suffix=".png", delete=False
+    ) as non_transparent_source_image:
+        new_pic = Image.new("RGB", source_image.size, ImageColor.getrgb(matte))
+        rgba_png = source_image.convert("RGBA")
+        new_pic.paste(rgba_png, rgba_png)
+        new_pic.save(non_transparent_source_image)
+        new_pic.close()
+        non_transparent_source_image.seek(0)
+
+        yield default.engine.get_image(non_transparent_source_image)
+
+        non_transparent_source_image.close()
+        remove(non_transparent_source_image.name)
 
 
 class SEOThumbnailBackend(ThumbnailBackend):
@@ -19,7 +42,18 @@ class SEOThumbnailBackend(ThumbnailBackend):
 
     def _create_thumbnail(self, source_image, geometry_string, options, thumbnail):
         key_at_start = thumbnail.key
-        super()._create_thumbnail(source_image, geometry_string, options, thumbnail)
+
+        # if PNG is transformed to JPEG transparency is lost. Make sure
+        # to set matte to whatver THUMBNAIL_PADDING_COLOR has been set to.
+        # if this is not done, the background will be black.
+        if source_image.format == "PNG" and options.get("format") == "JPEG":
+            with create_copy_with_matte(source_image) as non_transparent_source_image:
+                super()._create_thumbnail(
+                    non_transparent_source_image, geometry_string, options, thumbnail
+                )
+        else:
+            super()._create_thumbnail(source_image, geometry_string, options, thumbnail)
+
         key_at_end = thumbnail.key
 
         # make sure to get cache hits on the original requested filename, not the
