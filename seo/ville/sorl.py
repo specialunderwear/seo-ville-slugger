@@ -1,20 +1,21 @@
 import contextlib
 
 from os import path, remove
+from tempfile import NamedTemporaryFile
+
+from PIL import Image, ImageColor
+
 from sorl.thumbnail.base import ThumbnailBackend, EXTENSIONS
 from sorl.thumbnail.conf import settings
 from sorl.thumbnail import default
-from tempfile import NamedTemporaryFile
+
 from .slugger import SEOStorage
 
-from PIL import Image, ImageColor
 
 
 @contextlib.contextmanager
 def create_copy_with_matte(source_image, matte=settings.THUMBNAIL_PADDING_COLOR):
-    with NamedTemporaryFile(
-        suffix=".png", delete=False
-    ) as non_transparent_source_image:
+    with NamedTemporaryFile(suffix=".png", delete=False) as non_transparent_source_image:
         new_pic = Image.new("RGB", source_image.size, ImageColor.getrgb(matte))
         rgba_png = source_image.convert("RGBA")
         new_pic.paste(rgba_png, rgba_png)
@@ -32,7 +33,7 @@ class SEOThumbnailBackend(ThumbnailBackend):
     def _get_thumbnail_filename(self, source, geometry_string, options):
         name = path.basename(source.name)
         dirname = path.dirname(source.name)
-        base, ext = path.splitext(name)
+        base, _ = path.splitext(name)
         if "slug" in options:
             base = options["slug"]
 
@@ -59,6 +60,7 @@ class SEOThumbnailBackend(ThumbnailBackend):
         # make sure to get cache hits on the original requested filename, not the
         # filename returned by the file storage backend.
         if key_at_start != key_at_end:
+            # pylint: disable=protected-access
             default.kvstore._set(key_at_start, thumbnail)
 
 
