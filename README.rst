@@ -57,5 +57,8 @@ With sorl you can pass the slug as a parameter to the thumbnail tag::
 Settings
 ========
 
-``HASH_BLOCKSIZE`` change this if you think hashing of the file use too much or not enough memory
-``HASH_DIRNAME_SLICE_SIZE`` change this if you find there are too many collisions.
+- ``SEO_VILLE_SLUGGER_HASH_BLOCKSIZE`` change this if you think hashing of the file use too much or not enough memory
+- ``SEO_VILLE_SLUGGER_HASH_DIRNAME_SLICE_SIZE`` change this if you find there are too many collisions.
+- ``SEO_VILLE_SLUGGER_ALLOW_COPIES`` set this value to True if your media files get copies from server to server.
+   Because this process breaks the hardlinks, you will get failed assertion errors claiming the following:
+   ``The only way this can really happen if is when somebody uploads a file that is named after the hash of an existing file AND there is a collision in the first part of the hash. So if I've got an existing file that turns out after hashing as ce/cec9b1f7db34f7fa87bc3e807c9adf318deb30ef.jpg and then upload a file also named cec9b1f7db34f7fa87bc3e807c9adf318deb30ef.jpg but the hash of that file is really ce21b943a1d54b1e69194a823dcabcb103ed5888, which is completely different except for the first 2 characters. In that case this assertion will fail. Since this is not an exploit and the bad behaviour is on purpose, there will be an error and nobody will care.``

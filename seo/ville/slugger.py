@@ -2,6 +2,7 @@ import os
 from os import path
 import logging
 
+from seo import settings as seo_settings
 from seo.storage import SpecificNameStorage
 from seo.utils import file_hash, storage_location
 
@@ -28,11 +29,12 @@ class SEOStorage(SpecificNameStorage):
         full_link_path = self.path(link_path)
 
         if path.exists(full_link_path):
-            assert path.islink(full_link_path), REASON_NO_LINK
+            if not seo_settings.ALLOW_COPIES:
+                assert path.islink(full_link_path), REASON_NO_LINK
             if path.realpath(full_storage_path) == path.realpath(full_link_path):
                 return link_path
-            else:
-                return storage_path
+
+            return storage_path
 
         os.symlink(path.basename(storage_path), full_link_path)
         return link_path
@@ -44,5 +46,5 @@ class SEOStorage(SpecificNameStorage):
         file_id = file_hash(content)
         storage_path, link_path = storage_location(file_id, name, self.prefix)
         stored_location = self._save(storage_path, content)
-        logger.debug("File stored in %s" % stored_location)
+        logger.debug("File stored in %s", stored_location)
         return self.create_link(stored_location, link_path)

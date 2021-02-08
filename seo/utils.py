@@ -28,9 +28,9 @@ def storage_location(file_id, name, prefix=""):
     _, ext = splitext(name)
     ext = ext.lower()
     dir_name = get_directory_from_file_id(file_id)
-    file_name = "%s%s" % (file_id, ext)
+    _file_name = "%s%s" % (file_id, ext)
     ext_name = ext.replace(".", "")
     return (
-        join(prefix, ext_name, dir_name, file_name),
+        join(prefix, ext_name, dir_name, _file_name),
         join(prefix, ext_name, dir_name, basename(name)),
     )
