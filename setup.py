@@ -79,7 +79,7 @@ setup(
     author='Boie ktule',
     author_email='boie@permanentmarkers.nl',
     url='https://github.com/specialunderwear/seo-ville-slugger',
-    license='GPL',
+    license='MIT',
     # include all packages in the egg, except the test package.
     packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
     # include non python files
